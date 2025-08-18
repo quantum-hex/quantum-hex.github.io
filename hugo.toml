@@ -1,0 +1,161 @@
+# ------------------------------------
+# Basic site settings
+# ------------------------------------
+baseURL = "https://quantum-hex.github.io/"
+# baseURL = "https://quantum-hex.github.io/terachat-site/"
+title = "Terachat"
+languageCode = "zh"
+defaultContentLanguage = "zh"
+defaultContentLanguageInSubdir = true
+hasCJKLanguage = true
+enableRobotsTXT = true
+
+# Pagination
+[pagination]
+pagerSize = 10
+
+# Suppress Goldmark raw-HTML warning and allow inline HTML
+ignoreLogs = ['warning-goldmark-raw-html']
+
+[markup]
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
+
+# ------------------------------------
+# Hugo Modules (Ananke theme)
+# ------------------------------------
+[module]
+[module.hugoVersion]
+extended = true
+min = "0.128.0"
+
+[[module.imports]]
+path = "github.com/theNewDynamic/gohugo-theme-ananke/v2"
+
+# ------------------------------------
+# Sitemap
+# ------------------------------------
+[sitemap]
+changefreq = "weekly"
+filename = "sitemap.xml"
+priority = 0.5
+
+# ------------------------------------
+# Outputs (formats per section)
+# ------------------------------------
+[outputs]
+home = ["HTML", "RSS"]
+section = ["HTML", "RSS"]
+page = ["HTML"]
+taxonomy = ["HTML"]
+term = ["HTML"]
+
+# ------------------------------------
+# Languages
+# ------------------------------------
+[languages]
+
+[languages.zh]
+languageName = "中文"
+weight = 1
+contentDir = "content/zh"
+title = "Terachat 批量 WhatsApp 消息"
+description = "用 Terachat 批量发送 WhatsApp 消息：模板、个性化、定时、统计，合规与高效并存。"
+
+[languages.zh.params]
+description = "Terachat 批量 WhatsApp 消息"
+author = "Your Name"
+
+[languages.zh.menu]
+[[languages.zh.menu.main]]
+name = "首页"
+url = "/zh/"
+weight = 1
+[[languages.zh.menu.main]]
+name = "开始使用"
+url = "/zh/get-started/"
+weight = 2
+[[languages.zh.menu.main]]
+name = "法务"
+url = "/zh/legal/"
+weight = 3
+[[languages.zh.menu.main]]
+name = "常见问题"
+url = "/zh/faq/"
+weight = 4
+
+[languages.en]
+languageName = "English"
+weight = 2
+contentDir = "content/en"
+title = "Terachat — Bulk WhatsApp Messaging"
+description = "Send WhatsApp messages in bulk with Terachat: templates, personalization, scheduling, stats, and compliance."
+
+[languages.en.params]
+description = "Terachat Bulk WhatsApp Messaging"
+author = "Your Name"
+
+[languages.en.menu]
+[[languages.en.menu.main]]
+name = "Home"
+url = "/en/"
+weight = 1
+[[languages.en.menu.main]]
+name = "Get Started"
+url = "/en/get-started/"
+weight = 2
+[[languages.en.menu.main]]
+name = "Legal"
+url = "/en/legal/"
+weight = 3
+[[languages.en.menu.main]]
+name = "FAQ"
+url = "/en/faq/"
+weight = 4
+
+# ------------------------------------
+# Params (Ananke theme settings)
+# ------------------------------------
+[params]
+site_logo = "images/logo.png"
+favicon = "images/favicon.ico"
+featured_image = "/images/hero-terachat.jpg" # global hero (pages can override)
+background_color_class = "bg-black"
+body_classes = "avenir bg-near-white"
+recent_posts_number = 5
+custom_css = ["custom.css"] 
+
+# Social / external links
+telegram = "https://t.me/terachatws"
+github = "https://github.com/quantum-hex/whatsapp-blast"
+bitcoin = "BTC Wallet Address Here"
+
+# Social / external links
+[[params.social]]
+name = "GitHub"
+icon = "github"
+url = "https://github.com/quantum-hex/whatsapp-blast"
+
+[[params.social]]
+name = "Telegram"
+icon = "telegram"
+url = "https://t.me/terachatws"
+
+
+# ------------------------------------
+# Taxonomies (optional, minimal)
+# ------------------------------------
+[taxonomies]
+tag = "tags"
+category = "categories"
+
+# ------------------------------------
+# Security (needed for latestrelease shortcode)
+# ------------------------------------
+[security]
+enableInlineShortcodes = false
+
+[security.http]
+methods = ['(?i)GET|POST']
+urls = ['https://api.github.com/.*']

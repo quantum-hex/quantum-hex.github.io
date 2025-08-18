@@ -1,0 +1,113 @@
+{{/* latestrelease.html — Polished, centered Windows-only button for Ananke
+Usage: {{< latestrelease repo="quantum-hex/whatsapp-blast" windows_label="下载 Windows 版本">}}
+    */}}
+
+    {{ $repo := .Get "repo" | default "quantum-hex/whatsapp-blast" }}
+    {{ $api := printf "https://api.github.com/repos/%s/releases/latest" $repo }}
+    {{ $remote := resources.GetRemote $api (dict "headers" (dict "User-Agent" "terachat-site")) }}
+
+    {{ if not $remote }}
+    <div class="mv4 tc">
+        <div class="mw7 center pa4 br3 bg-washed-red dark-red">
+            <p class="ma0">无法连接 GitHub。你可以前往
+                <a class="link dark-red underline" href="https://github.com/{{ $repo }}/releases" rel="noopener">GitHub
+                    Releases</a>
+                查看所有版本。
+            </p>
+        </div>
+    </div>
+    {{ else }}
+    {{ $data := $remote | transform.Unmarshal }}
+    {{ if or (not $data) (not $data.assets) }}
+    <div class="mv4 tc">
+        <div class="mw7 center pa4 br3 bg-washed-yellow near-black">
+            <p class="ma0">暂无可用的发布版本。请访问
+                <a class="link underline" href="https://github.com/{{ $repo }}/releases" rel="noopener">GitHub
+                    Releases</a>。
+            </p>
+        </div>
+    </div>
+    {{ else }}
+
+    {{/* Collect .exe + optional .sha256 using Scratch (safe for nils) */}}
+    {{ $s := newScratch }}
+    {{ $s.Set "exeURL" "" }}
+    {{ $s.Set "exeName" "" }}
+    {{ $s.Set "exeSize" 0 }}
+    {{ $s.Set "shaURL" "" }}
+    {{ $s.Set "shaName" "" }}
+
+    {{ range $data.assets }}
+    {{ $name := lower .name }}
+    {{ if and (in $name ".exe") (eq ($s.Get "exeURL") "") }}
+    {{ $s.Set "exeURL" .browser_download_url }}
+    {{ $s.Set "exeName" .name }}
+    {{ $s.Set "exeSize" .size }}
+    {{ end }}
+    {{ if and (or (in $name ".sha256") (in $name "sha256")) (eq ($s.Get "shaURL") "") }}
+    {{ $s.Set "shaURL" .browser_download_url }}
+    {{ $s.Set "shaName" .name }}
+    {{ end }}
+    {{ end }}
+
+    {{ $exeURL := $s.Get "exeURL" }}
+    {{ $exeName := $s.Get "exeName" }}
+    {{ $exeSize := $s.Get "exeSize" }}
+    {{ $shaURL := $s.Get "shaURL" }}
+    {{ $shaName := $s.Get "shaName" }}
+    {{ $tag := $data.tag_name }}
+
+    {{/* Format size in MB if available */}}
+    {{ $sizeLabel := "" }}
+    {{ if gt $exeSize 0 }}
+    {{ $mb := div (float $exeSize) 1048576 }}
+    {{ $sizeLabel = printf "%.1f MB" $mb }}
+    {{ end }}
+
+    <div class="mv4 w-100 tc">
+        <div class="mw7 center pa4 br3 shadow-4 bg-near-white">
+
+            {{ with $tag }}
+            <div class="f7 silver mb2">Latest release: <code>{{ . }}</code></div>
+            {{ end }}
+
+            <div class="mv3">
+                {{ if $exeURL }}
+                <a class="btn-download" href="{{ $exeURL }}" rel="noopener">
+                    <span class="btn-download__icon">
+                        <!-- inline download icon -->
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5 20h14v-2H5v2zM12 2v10l4-4 1.41 1.41L12 15.83 6.59 9.41 8 8l4 4V2h0z" />
+                        </svg>
+                    </span>
+                    <span class="btn-download__label">
+                        {{ $.Get "windows_label" | default "Download for Windows (.exe)" }}
+                    </span>
+                </a>
+
+                {{ else }}
+                <a class="btn-download link white br-pill ph4 pv3 fw6 dib bg-near-black"
+                    href="https://github.com/{{ $repo }}/releases" rel="noopener">
+                    View all assets
+                </a>
+                {{ end }}
+            </div>
+
+            {{ if or $exeName $sizeLabel }}
+            <div class="f7 mid-gray">
+                {{ with $exeName }}<span class="mr2">{{ . }}</span>{{ end }}
+                {{ with $sizeLabel }}<span class="o-70">({{ . }})</span>{{ end }}
+            </div>
+            {{ end }}
+
+            {{ with $shaURL }}
+            <div class="mt2 f7 mid-gray">
+                Checksum: <a class="link dark-blue underline" href="{{ . }}">{{ $shaName }}</a>
+            </div>
+            {{ end }}
+
+        </div>
+    </div>
+
+    {{ end }}
+    {{ end }}

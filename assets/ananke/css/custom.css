@@ -1,0 +1,201 @@
+/* ==========================================================================
+   Terachat — Ananke/Tachyons overrides
+   Purpose:
+   1) Stop narrow column & centered markdown (.measure-wide, .tc, .tc-l)
+   2) Make <hr> span full content width (not a short hairline)
+   3) Style the white "pretty" download button (latestrelease shortcode)
+   Safe: doesn't touch the hero/cover area
+   ========================================================================== */
+
+/* ---------------------------------------
+   1) Markdown layout: width & alignment
+   --------------------------------------- */
+
+/* Tachyons sets .measure-wide { max-width: 34em } → too narrow for content.
+   We expand it to fill the section container.
+*/
+.measure-wide {
+    max-width: 100% !important;
+}
+
+/* Many Ananke content blocks get both .center (mx-auto) and .tc-l (center text on large).
+   We keep the centering box-model but force text left for readable markdown. */
+.measure-wide.tc-l,
+.measure-wide.tc,
+.nested-copy-line-height.tc,
+.nested-copy-line-height.tc-l {
+    text-align: left !important;
+}
+
+/* Ensure typical post content is left aligned even if a parent applies .tc */
+.nested-copy-line-height,
+.nested-copy-line-height p,
+.nested-copy-line-height h1,
+.nested-copy-line-height h2,
+.nested-copy-line-height h3,
+.nested-copy-line-height h4,
+.nested-copy-line-height h5,
+.nested-copy-line-height h6,
+.nested-copy-line-height ul,
+.nested-copy-line-height ol,
+.nested-copy-line-height blockquote {
+    text-align: left !important;
+}
+
+/* ---------------------------------------
+   2) Horizontal rule width and visuals
+   --------------------------------------- */
+
+hr {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 1px;
+    border: 0;
+    background: #d1d5db;
+    /* light neutral */
+    margin: 2rem 0;
+}
+
+/* Optional: full-viewport divider if you add <hr class="full-bleed"> in markdown */
+hr.full-bleed {
+    width: 100vw !important;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    height: 1px;
+    border: 0;
+    background: #e5e7eb;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+/* ---------------------------------------
+   3) Download card & white CTA button
+   --------------------------------------- */
+
+/* (Optional) card wrapper if you use it in the shortcode */
+.latestrelease-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+}
+
+/* Center the download button row reliably */
+.latestrelease-buttons {
+    text-align: center;
+}
+
+/* Pretty white download button */
+.btn-download {
+    background-color: #fff;
+    color: #111827;
+    /* neutral-900 */
+    border: 1px solid #e5e7eb;
+    /* neutral-200 */
+    border-radius: 9999px;
+    /* pill */
+    padding: 0.85rem 2.5rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: background-color .2s ease, border-color .2s ease,
+        box-shadow .2s ease, transform .15s ease;
+}
+
+.btn-download:hover,
+.btn-download:focus {
+    background-color: #f9fafb;
+    /* subtle hover */
+    border-color: #d1d5db;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    text-decoration: none;
+}
+
+.btn-download:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.96),
+        0 0 0 6px rgba(0, 0, 0, 0.20),
+        0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+.btn-download__icon {
+    display: inline-flex;
+    margin-right: .65rem;
+    line-height: 0;
+}
+
+.latestrelease-meta {
+    color: #6b7280;
+    /* neutral-500 */
+    font-size: .85rem;
+}
+
+/* ---------------------------------------
+   4) Do NOT change the cover/hero area
+   --------------------------------------- */
+
+.cover .ph3,
+.cover .ph4-ns,
+.cover .fw2,
+.cover .f2 {
+    text-align: center;
+}
+
+
+
+/* Footer icon sizing/alignment */
+/* Footer icon styling */
+.site-footer .footer-icon svg {
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+}
+
+.site-footer .footer-icon {
+    opacity: .9;
+    transition: opacity .2s ease;
+}
+
+.site-footer .footer-icon:hover {
+    opacity: 1;
+}
+
+.site-footer .footer-icon-fallback {
+    font-size: .85rem;
+}
+
+/* Optional: slimmer footer padding on mobile */
+@media (max-width: 30em) {
+    .site-footer {
+        padding-top: 1.25rem;
+        padding-bottom: 1.25rem;
+    }
+}
+
+.pb7 {
+    padding-bottom: 4rem !important;
+    /* or whatever fits */
+}
+
+
+/* Align icons in header */
+.site-social-icons svg {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+.header-icon {
+  opacity: .9;
+  transition: opacity .2s ease;
+}
+.header-icon:hover { opacity: 1; }
+.header-icon-fallback { font-size: .85rem; }

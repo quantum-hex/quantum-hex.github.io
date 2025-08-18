@@ -1,0 +1,56 @@
+{{- $current := . -}}
+<footer class="site-footer pv4 ph3 ph5-m ph6-l bg-near-white mid-gray">
+    <div class="mw8 center">
+
+        <!-- Social icons -->
+        {{ with .Site.Params.social }}
+        <div class="tc mb3">
+            {{ range . }}
+            {{ if or (eq .icon "telegram") (eq .icon "github") }}
+            {{ $name := .name | default .icon }}
+            {{ $icon := .icon | lower }}
+            <a class="dib mh2 footer-icon link mid-gray hover-dark-gray" href="{{ .url }}" target="_blank"
+                rel="noopener" aria-label="{{ $name }}">
+                {{- $svg := printf "svg/%s.svg" $icon -}}
+                {{- if (templates.Exists (printf "partials/%s" $svg)) -}}
+                {{ partial $svg $current }}
+                {{- else -}}
+                <span class="footer-icon-fallback">{{ $name }}</span>
+                {{- end -}}
+            </a>
+            {{ end }}
+            {{ end }}
+        </div>
+        {{ end }}
+
+        <!-- Footer nav -->
+        {{ with .Site.Menus.main }}
+        <nav class="tc mb3">
+            {{ range . }}
+            <a class="link dim mid-gray mh2" href="{{ .URL }}">{{ .Name }}</a>
+            {{ end }}
+        </nav>
+        {{ end }}
+
+        <!-- Language switcher -->
+        {{ if gt (len .Site.Languages) 1 }}
+        <div class="tc f7 mb3">
+            {{ range .Site.Sites }}
+            {{ $isActive := eq .Language.Lang $.Site.Language.Lang }}
+            {{ if $isActive }}
+            <span class="mh1 dark-gray b">{{ .Language.LanguageName }}</span>
+            {{ else }}
+            <a class="link dim mid-gray mh1" href="{{ .Home.RelPermalink }}">
+                {{ .Language.LanguageName }}
+            </a>
+            {{ end }}
+            {{ end }}
+        </div>
+        {{ end }}
+
+        <!-- Copyright -->
+        <div class="tc f7 o-70">
+            © {{ now.Format "2006" }} Terachat. All rights reserved.
+        </div>
+    </div>
+</footer>

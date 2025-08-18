@@ -1,0 +1,11 @@
+# Hugo build outputs
+/public/
+/resources/
+.hugo_build.lock
+
+# Node/npm (if you add tooling later)
+/node_modules/
+
+# OS cruft
+.DS_Store
+Thumbs.db
